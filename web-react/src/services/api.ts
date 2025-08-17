@@ -9,7 +9,9 @@ export type BackendType = 'python' | 'nodejs';
 
 // Environment detection
 export const isProd = import.meta.env.PROD;
-export const nodejsBackendUrl = import.meta.env.VITE_NODEJS_BACKEND_URL || 'http://localhost:3001/api';
+// In production with single-project deployment, Node.js backend is on the same domain at /api
+// Only in development do we need a separate URL
+export const nodejsBackendUrl = isProd ? '/api' : (import.meta.env.VITE_NODEJS_BACKEND_URL || 'http://localhost:3001/api');
 export const pythonBackendUrl = import.meta.env.VITE_PYTHON_BACKEND_URL || '/api';
 
 // API Types
@@ -58,6 +60,11 @@ export class ApiService {
     this.backendType = backendType;
     this.baseUrl = this.getBaseUrl(backendType);
     console.log(`Switched to ${backendType} backend at ${this.baseUrl} (${isProd ? 'production' : 'development'} environment)`);
+    
+    // For single-project deployment in production, both backends are on the same domain
+    if (isProd) {
+      console.log('Using single-project deployment: All API calls on same domain');
+    }
     
     // Save preference to localStorage for persistence
     try {

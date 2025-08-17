@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "buildCommand": "cd web-react && npm install && npm run build",
+  "outputDirectory": "web-react/dist",
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/nodejs-backend/api/$1",
+      "headers": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+        "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/web-react/dist/$1"
+    }
+  ],
+  "builds": [
+    {
+      "src": "nodejs-backend/api/**/*.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "web-react/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ]
+}
