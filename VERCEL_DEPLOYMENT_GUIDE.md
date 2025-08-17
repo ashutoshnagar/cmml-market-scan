@@ -11,10 +11,11 @@ This guide provides the steps to deploy both the Node.js backend and React front
 
 We've made the following changes to prepare for deployment:
 
-1. **Simplified vercel.json**
-   - Configured API routes with proper CORS headers
-   - Set up serverless functions runtime
-   - Uses Vercel's auto-detection for frontend framework
+1. **Updated vercel.json (Version 2)**
+   - Configured with version 2 format for better compatibility
+   - Set up clean build process that removes node_modules first
+   - Properly configured API routes with CORS headers
+   - Includes maxDuration setting for API functions
 
 2. **API Service Configuration** (`web-react/src/services/api.ts`)
    - Updated to use environment variables for backend URLs
@@ -25,8 +26,17 @@ We've made the following changes to prepare for deployment:
    - Simple structure that's compatible with Vercel's deployment model
 
 4. **Root Package.json**
-   - Added for Vercel project recognition
-   - Configured proper build commands for the React frontend
+   - Simplified build commands for better Vercel compatibility
+   - Removed complex nested dependency installations
+
+5. **Fixed PostCSS Configuration**
+   - Updated to use explicit require.resolve() for Tailwind and Autoprefixer
+   - Added tailwindcss/nesting plugin for better CSS nesting support
+   - Resolves module loading issues during build
+
+6. **Updated Frontend Dependencies**
+   - Fixed versions of Tailwind, PostCSS, and other packages
+   - Removed problematic dependencies that caused build failures
 
 ## Deployment Process (Single Project Approach)
 
@@ -71,7 +81,8 @@ If you encounter issues:
 1. **Build Errors**: 
    - Check the build logs in Vercel dashboard
    - Look for any errors in the React build process
-   - If TypeScript errors occur, the build is now configured to bypass them
+   - Common issues include PostCSS plugin loading and Tailwind dependencies
+   - The updated configuration addresses known build errors
 
 2. **API Errors**: 
    - Verify the API routes are correctly mapped in vercel.json
@@ -81,6 +92,42 @@ If you encounter issues:
 3. **Environment Variables**: 
    - Ensure all required environment variables are set in the Vercel project settings
    - Check if they're being accessed correctly in your code
+
+## Important Configuration Files
+
+1. **vercel.json**
+   ```json
+   {
+     "version": 2,
+     "buildCommand": "cd web-react && rm -rf node_modules package-lock.json && npm install && npm run build && cd ../api && npm install",
+     "outputDirectory": "web-react/dist",
+     "framework": null,
+     "rewrites": [
+       {
+         "source": "/api/(.*)",
+         "destination": "/api"
+       }
+     ],
+     "functions": {
+       "api/index.js": {
+         "maxDuration": 30,
+         "includeFiles": "api/**"
+       }
+     },
+     "headers": [...]
+   }
+   ```
+
+2. **web-react/postcss.config.cjs**
+   ```js
+   module.exports = {
+     plugins: {
+       'tailwindcss/nesting': {},
+       tailwindcss: require.resolve('tailwindcss'),
+       autoprefixer: require.resolve('autoprefixer')
+     },
+   }
+   ```
 
 ## Logs and Monitoring
 

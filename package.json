@@ -4,9 +4,9 @@
   "description": "CMML Market Scan project with React frontend and Node.js backend",
   "main": "index.js",
   "scripts": {
-    "build": "cd web-react && npm install && npm install vite@4.3.9 @vitejs/plugin-react@4.2.0 tailwindcss autoprefixer postcss --no-save && npm run build",
+    "build": "cd web-react && npm install && npm run build",
     "start": "cd web-react && npm start",
-    "vercel-build": "cd web-react && npm install && npm install vite@4.3.9 @vitejs/plugin-react@4.2.0 tailwindcss autoprefixer postcss --no-save && cd node_modules/tailwindcss && npm install && cd ../../ && node node_modules/vite/bin/vite.js build"
+    "dev": "cd web-react && npm run dev"
   },
   "engines": {
     "node": "22.x"
