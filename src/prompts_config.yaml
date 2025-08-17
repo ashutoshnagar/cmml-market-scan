@@ -1,0 +1,387 @@
+version: '2.1'
+metadata:
+  description: Prompt templates for CMML Market Scan workflow nodes
+  last_modified: '2025-01-16'
+  author: CMML System
+nodes:
+  company_overview:
+    name: Company & Business Overview
+    type: google_search
+    description: Analyzes company overview using web search
+    prompt_template: 'As an analyst for the Corporate & Mid-Market Lending team in
+      Piramal Finance, Please perform internet based research and provide a concise
+      and comprehensive overview of **{company_name}**  based on information from
+      its official website, other relevant and reliable sources.
+
+
+      **Company Overview**
+
+
+      **Company Establishment:** When was the company founded?
+
+      **Core Business:** What is the primary business of the company?
+
+      **Products/Services:** What are the key products or services offered? Provide
+      in Bullet points always.
+
+
+      ## GUIDELINES:
+
+      1. This is needed for CEO, more the precise and sharp, better it will be.
+
+      2. Do NOT make this verbose
+
+
+      ## MARKDOWN FORMATTING REQUIREMENTS:
+
+
+      **Structure:**
+
+      - Use ### **[Subsection Title]** for all subsections (bold titles in h3)
+
+      - Use #### [Sub-point Title] for deeper nesting if needed
+
+      - Always maintain consistent hierarchy
+
+
+      **Content Formatting:**
+
+      - **Bold labels:** Use **Label:** followed by content
+
+      - **Lists:** Use - for bullet points, maintain consistent indentation
+
+      - **Important highlights:** Use > **Key Point:** for blockquotes
+
+      - **Warnings/Red flags:** Use > ⚠️ **RED FLAG:** for concerns
+
+      - **Emphasis:** Use **bold** for key terms, *italics* for emphasis
+
+
+      **Table Standards:**
+
+      - Always include header row with proper alignment
+
+      - Use | Column 1 | Column 2 | Column 3 | format
+
+      - Include separator row: |----------|----------|----------|
+
+      - Left-align text, right-align numbers
+
+      - Use "N/A" for missing data consistently
+
+
+      **Data Presentation:**
+
+      - **Currency:** Always specify unit (₹ Crores, ₹ Lakhs, etc.)
+
+      - **Dates:** Use DD-MMM-YYYY format (e.g., 15-Mar-2024)
+
+      - **Numbers:** Use Indian numbering system (Crores/Lakhs)
+
+      - **Percentages:** Always include % symbol
+
+      - **Ratings:** Use consistent format (e.g., AA-/Stable)
+
+
+      **Professional Standards:**
+
+      - Keep content concise and factual
+
+      - Use consistent terminology throughout
+
+      - Maintain professional tone
+
+      - Include units and context for all numerical data
+
+      - Use proper spacing between sections
+
+
+      Format your response using these exact standards for consistency across the
+      entire report.
+
+      Format the response in Markdown format with proper headings and structure.
+
+      '
+    enabled: true
+  industry_overview:
+    name: Industry Overview
+    type: google_search
+    description: Analyzes industry trends and competitive landscape
+    prompt_template: "As an analyst for the Corporate & Mid-Market Lending team in\
+      \ Piramal Finance, Please perform internet based research and provide a concise\
+      \ and comprehensive overview of **{company_name}** industry from credible resources.\
+      \ \n\n**Industry Overview**\n\n**Brief about Industry:** What is the nature\
+      \ of the industry in which the company operates?\n**Past/Future Trends:** What\
+      \ are the significant past and future trends that one should be watchful of?\n\
+      **Industry Volatility:** How volatile is the industry, and what factors contribute\
+      \ to its stability or instability?\n\n## GUIDELINES:\n1. This is needed for\
+      \ CEO, more the precise and sharp, better it will be.\n2. Do NOT make this verbose.\n\
+      3. Only focus on subheading, do not show the expectation in the output. \n4.\
+      \ Keep the latest info only.\n\nFormat the response in Markdown format with\
+      \ proper headings and structure.\n## MARKDOWN FORMATTING REQUIREMENTS:\n\n**Structure:**\n\
+      - Use ### **[Subsection Title]** for all subsections (bold titles in h3)\n-\
+      \ Use #### [Sub-point Title] for deeper nesting if needed\n- Always maintain\
+      \ consistent hierarchy\n\n**Content Formatting:**\n- **Bold labels:** Use **Label:**\
+      \ followed by content\n- **Lists:** Use - for bullet points, maintain consistent\
+      \ indentation\n- **Important highlights:** Use > **Key Point:** for blockquotes\n\
+      - **Warnings/Red flags:** Use > ⚠️ **RED FLAG:** for concerns\n- **Emphasis:**\
+      \ Use **bold** for key terms, *italics* for emphasis\n\n**Table Standards:**\n\
+      - Always include header row with proper alignment\n- Use | Column 1 | Column\
+      \ 2 | Column 3 | format\n- Include separator row: |----------|----------|----------|\n\
+      - Left-align text, right-align numbers\n- Use \"N/A\" for missing data consistently\n\
+      \n**Data Presentation:**\n- **Currency:** Always specify unit (₹ Crores, ₹ Lakhs,\
+      \ etc.)\n- **Dates:** Use DD-MMM-YYYY format (e.g., 15-Mar-2024)\n- **Numbers:**\
+      \ Use Indian numbering system (Crores/Lakhs)\n- **Percentages:** Always include\
+      \ % symbol\n- **Ratings:** Use consistent format (e.g., AA-/Stable)\n\n**Professional\
+      \ Standards:**\n- Keep content concise and factual\n- Use consistent terminology\
+      \ throughout\n- Maintain professional tone\n- Include units and context for\
+      \ all numerical data\n- Use proper spacing between sections\n"
+    enabled: true
+  promoters_directors:
+    name: Promoters and Directors
+    type: pdf_analysis
+    description: Extracts promoter and board information from PDF
+    pdf_section: DIRECTORS
+    prompt_template: "As an analyst for the Corporate & Mid-Market Lending team in\
+      \ Piramal Finance, pls extract and analyze information about Promoters and Board\
+      \ of Directors for {company_name} from the provided report.\n\n**Board of Directors**\n\
+      **Instructions:**\n1. Identify Active Directors: From the \"Directors\" section\
+      \ of the report, compile a list of all individuals currently designated as active\
+      \ directors. Exclude any individuals listed with a \"Cessation Date.\"\n2. Extract\
+      \ and Summarize: For each active director identified, extract the required information\
+      \ and create a concise, one-sentence summary of their professional background\
+      \ or key affiliations, based only on the information available within the report\
+      \ (e.g., \"Other Directorships/Partnerships\" and biographical sections).\n\
+      3. Format Output Table: Present the extracted information in a single table\
+      \ with the following columns:\n    - Full Name\n    - Designation\n    - Date\
+      \ of Appointment\n    - DIN\n    - Summary of Experience\n\n**Promoters/Shareholders**\n\
+      1. List all promoters with their shareholding percentages\n2. Any changes in\
+      \ promoter shareholding in recent years\n3. Pledged shares by promoters (if\
+      \ any)\n\n\n**Important:** \n- Only include ACTIVE directors (no cessation date)\n\
+      - Provide one-sentence summary of each director's background\n- Format as Markdown\
+      \ tables\n\nFocus on extracting from the \"DIRECTORS\" or \"BOARD\" section\
+      \ of the document. \n\n## MARKDOWN FORMATTING REQUIREMENTS:\n\n**Structure:**\n\
+      - Use ### **[Subsection Title]** for all subsections (bold titles in h3)\n-\
+      \ Use #### [Sub-point Title] for deeper nesting if needed\n- Always maintain\
+      \ consistent hierarchy\n\n**Content Formatting:**\n- **Bold labels:** Use **Label:**\
+      \ followed by content\n- **Lists:** Use - for bullet points, maintain consistent\
+      \ indentation\n- **Important highlights:** Use > **Key Point:** for blockquotes\n\
+      - **Warnings/Red flags:** Use > ⚠️ **RED FLAG:** for concerns\n- **Emphasis:**\
+      \ Use **bold** for key terms, *italics* for emphasis\n\n**Table Standards:**\n\
+      - Always include header row with proper alignment\n- Use | Column 1 | Column\
+      \ 2 | Column 3 | format\n- Include separator row: |----------|----------|----------|\n\
+      - Left-align text, right-align numbers\n- Use \"N/A\" for missing data consistently\n\
+      \n**Data Presentation:**\n- **Currency:** Always specify unit (₹ Crores, ₹ Lakhs,\
+      \ etc.)\n- **Dates:** Use DD-MMM-YYYY format (e.g., 15-Mar-2024)\n- **Numbers:**\
+      \ Use Indian numbering system (Crores/Lakhs)\n- **Percentages:** Always include\
+      \ % symbol\n- **Ratings:** Use consistent format (e.g., AA-/Stable)\n\n**Professional\
+      \ Standards:**\n- Keep content concise and factual\n- Use consistent terminology\
+      \ throughout\n- Maintain professional tone\n- Include units and context for\
+      \ all numerical data\n- Use proper spacing between sections\n"
+    enabled: true
+  credit_rating:
+    name: Credit Rating History
+    type: pdf_analysis
+    description: Extracts credit rating history from PDF
+    pdf_section: RATING
+    prompt_template: "As an analyst for the Corporate & Mid-Market Lending team in\
+      \ Piramal Finance, please extract and analyze the Credit Rating History for\
+      \ {company_name} from the provided report.\n\n**Instructions:**\n1. Categorize\
+      \ by Agency: Create a separate section and table for each credit rating agency\
+      \ mentioned in the report (e.g., CRISIL, India Ratings, CARE, ICRA).\n2. Extract\
+      \ Rating History (Last 5-7 Years): For each rating agency, extract the following\
+      \ details for all rating actions within the last 5 to 7 years and share in descending\
+      \ order:\n  - Month & Year: The month and financial year of the rating (e.g.,\
+      \ Jan - 25).\n  - Credit Rating: The specific rating assigned (Only single rating\
+      \ shall be mentioned)\n  - Outlook: The associated outlook (e.g., Stable, Positive,\
+      \ Negative or something else). If none is provided, use \"-\".\n3. Filter for\
+      \ Changes: If a rating agency has issued multiple ratings within the same financial\
+      \ year, include only the entries where there has been a change in either the\
+      \ Credit Rating or the Outlook. Ignore entries where both remain unchanged from\
+      \ the previous entry in that same year.\n4. Generate Rationale Summary: For\
+      \ each rating entry you list, provide a brief, one line summary explaining the\
+      \ key drivers behind the rating decision as stated in the report. This summary\
+      \ must be specific.\n5. Format Output Tables: Present the information in separate\
+      \ tables for each rating agency, using the following columns:\n  - Month & Financial\
+      \ Year\n  - Credit Rating\n  - Outlook\n  - Generated Rationale\n\n\n**Format:**\n\
+      Create separate Markdown tables for each rating agency.\nSort entries in descending\
+      \ chronological order.\n\nFocus on the \"RATING\" or \"CREDIT RATING\" section\
+      \ of the document.\n\n## MARKDOWN FORMATTING REQUIREMENTS:\n\n**Structure:**\n\
+      - Use ### **[Subsection Title]** for all subsections (bold titles in h3)\n-\
+      \ Use #### [Sub-point Title] for deeper nesting if needed\n- Always maintain\
+      \ consistent hierarchy\n\n**Content Formatting:**\n- **Bold labels:** Use **Label:**\
+      \ followed by content\n- **Lists:** Use - for bullet points, maintain consistent\
+      \ indentation\n- **Important highlights:** Use > **Key Point:** for blockquotes\n\
+      - **Warnings/Red flags:** Use > ⚠️ **RED FLAG:** for concerns\n- **Emphasis:**\
+      \ Use **bold** for key terms, *italics* for emphasis\n\n**Table Standards:**\n\
+      - Always include header row with proper alignment\n- Use | Column 1 | Column\
+      \ 2 | Column 3 | format\n- Include separator row: |----------|----------|----------|\n\
+      - Left-align text, right-align numbers\n- Use \"N/A\" for missing data consistently\n\
+      \n**Data Presentation:**\n- **Currency:** Always specify unit (₹ Crores, ₹ Lakhs,\
+      \ etc.)\n- **Dates:** Use DD-MMM-YYYY format (e.g., 15-Mar-2024)\n- **Numbers:**\
+      \ Use Indian numbering system (Crores/Lakhs)\n- **Percentages:** Always include\
+      \ % symbol\n- **Ratings:** Use consistent format (e.g., AA-/Stable)\n\n**Professional\
+      \ Standards:**\n- Keep content concise and factual\n- Use consistent terminology\
+      \ throughout\n- Maintain professional tone\n- Include units and context for\
+      \ all numerical data\n- Use proper spacing between sections\n"
+    enabled: true
+  financials:
+    name: Financial Performance
+    type: pdf_analysis
+    description: Extracts financial metrics from PDF
+    pdf_section: FINANCIALS
+    prompt_template: "As an analyst for the Corporate & Mid-Market Lending team in\
+      \ Piramal Finance, please extract and analyze Key Financial Performance metrics\
+      \ for {company_name} from the provided pdf report.\n\nInstructions:\n1. Extract\
+      \ Financial Metrics: From the financial statements in the report, extract the\
+      \ following key metrics for the last 3 to 4 financial years. If there are 4\
+      \ years available then must capture for 4. Data should only be mentioned if\
+      \ available and clearly established. The data is available in \"5.FINANCIALS\"\
+      \ in the report:\n  - Revenue from Operations\n  - EBITDA (Earnings Before Interest,\
+      \ Taxes, Depreciation, and Amortization)\n  - Profit After Tax (PAT)\n  - Net\
+      \ Worth\n  - Total Debt (sum of long-term and short-term debt)\n2. Handle Missing\
+      \ Data: If a specific metric is not available for a given year, clearly mark\
+      \ it as NA in the table.\n\n**Format:**\nCreate an Markdown table with:\n- Rows:\
+      \ Financial metrics\n- Columns: Years (in ascending order, always)\n- Use \"\
+      NA\" for unavailable data\n\nFocus on the \"FINANCIALS\" or \"FINANCIAL STATEMENTS\"\
+      \ section.\n## MARKDOWN FORMATTING REQUIREMENTS:\n\n**Structure:**\n- Use ###\
+      \ **[Subsection Title]** for all subsections (bold titles in h3)\n- Use ####\
+      \ [Sub-point Title] for deeper nesting if needed\n- Always maintain consistent\
+      \ hierarchy\n\n**Content Formatting:**\n- **Bold labels:** Use **Label:** followed\
+      \ by content\n- **Lists:** Use - for bullet points, maintain consistent indentation\n\
+      - **Important highlights:** Use > **Key Point:** for blockquotes\n- **Warnings/Red\
+      \ flags:** Use > ⚠️ **RED FLAG:** for concerns\n- **Emphasis:** Use **bold**\
+      \ for key terms, *italics* for emphasis\n\n**Table Standards:**\n- Always include\
+      \ header row with proper alignment\n- Use | Column 1 | Column 2 | Column 3 |\
+      \ format\n- Include separator row: |----------|----------|----------|\n- Left-align\
+      \ text, right-align numbers\n- Use \"N/A\" for missing data consistently\n\n\
+      **Data Presentation:**\n- **Currency:** Always specify unit (₹ Crores, ₹ Lakhs,\
+      \ etc.)\n- **Dates:** Use DD-MMM-YYYY format (e.g., 15-Mar-2024)\n- **Numbers:**\
+      \ Use Indian numbering system (Crores/Lakhs)\n- **Percentages:** Always include\
+      \ % symbol\n- **Ratings:** Use consistent format (e.g., AA-/Stable)\n\n**Professional\
+      \ Standards:**\n- Keep content concise and factual\n- Use consistent terminology\
+      \ throughout\n- Maintain professional tone\n- Include units and context for\
+      \ all numerical data\n- Use proper spacing between sections\n"
+    enabled: true
+  compliance_checks:
+    name: Compliance & Due Diligence
+    type: google_search
+    description: Performs compliance and regulatory checks
+    prompt_template: "As an analyst for the Corporate & Mid-Market Lending team in\
+      \ Piramal Finance, Conduct comprehensive compliance and due diligence checks\
+      \ for **{company_name}** from interent.\n\n**Wilful Defaulter Status:** Is the\
+      \ company or its directors/promoters listed as wilful defaulters?\n**Regulatory\
+      \ Actions:** Are there any SEBI order or penalities, RBI actions or penalities\
+      \ or other regulatory penalties.\n**CIBIL Remarks:** Are there any adverse remarks\
+      \ in the CIBIL reports for the company and its directors/promoters?\n**Statutory\
+      \ Dues:** Are there any reported delays in GST or EPFO payments or Income tax\
+      \ disputes?\n**Auditor's Opinion:** Have the auditors made any adverse remarks\
+      \ in the company's financial reports?\n**Legal Proceedings:** Are there any\
+      \ significant pending legal cases against the company or its directors?\n\n\
+      \ ## GUIDELINES:\n1. This is needed for CEO, more the precise and sharp, better\
+      \ it will be.\n2. Do NOT make this verbose.\n3. Keep the latest info only.\n\
+      4. Only Very important details which are needed and helpful. Avoid adding random\
+      \ information.\n\nFormat the response in HTML with clear sections for each compliance\
+      \ area. KEEP it very concise and breif, do not overload with information, only\
+      \ very important information.\nMark any RED FLAGS prominently.\n## MARKDOWN\
+      \ FORMATTING REQUIREMENTS:\n\n**Structure:**\n- Use ### **[Subsection Title]**\
+      \ for all subsections (bold titles in h3)\n- Use #### [Sub-point Title] for\
+      \ deeper nesting if needed\n- Always maintain consistent hierarchy\n\n**Content\
+      \ Formatting:**\n- **Bold labels:** Use **Label:** followed by content\n- **Lists:**\
+      \ Use - for bullet points, maintain consistent indentation\n- **Important highlights:**\
+      \ Use > **Key Point:** for blockquotes\n- **Warnings/Red flags:** Use > ⚠️ **RED\
+      \ FLAG:** for concerns\n- **Emphasis:** Use **bold** for key terms, *italics*\
+      \ for emphasis\n\n**Table Standards:**\n- Always include header row with proper\
+      \ alignment\n- Use | Column 1 | Column 2 | Column 3 | format\n- Include separator\
+      \ row: |----------|----------|----------|\n- Left-align text, right-align numbers\n\
+      - Use \"N/A\" for missing data consistently\n\n**Data Presentation:**\n- **Currency:**\
+      \ Always specify unit (₹ Crores, ₹ Lakhs, etc.)\n- **Dates:** Use DD-MMM-YYYY\
+      \ format (e.g., 15-Mar-2024)\n- **Numbers:** Use Indian numbering system (Crores/Lakhs)\n\
+      - **Percentages:** Always include % symbol\n- **Ratings:** Use consistent format\
+      \ (e.g., AA-/Stable)\n\n**Professional Standards:**\n- Keep content concise\
+      \ and factual\n- Use consistent terminology throughout\n- Maintain professional\
+      \ tone\n- Include units and context for all numerical data\n- Use proper spacing\
+      \ between sections\n"
+    enabled: true
+  news_checks:
+    name: News & Media Analysis
+    type: google_search
+    description: Analyzes recent news and media coverage
+    prompt_template: "As an analyst for the Corporate & Mid-Market Lending team in\
+      \ Piramal Finance, analyze recent news and media coverage for **{company_name}**\
+      \ for last 6-12 months.\n\n\n**General Hygiene:** What is the general sentiment\
+      \ or reputation of the company based on recent news?\n**Articles & Coverage:**\
+      \ Are there any notable recent news articles or media coverage concerning the\
+      \ company or its promoters?\n**Corporate Announcements:** What are the latest\
+      \ corporate announcements made by the company on the BSE/NSE portals?\n\n  ##\
+      \ GUIDELINES:\n1. This is needed for CEO, more the precise and sharp, better\
+      \ it will be.\n2. Do NOT make this verbose.\n3. Keep the latest info only.\n\
+      4. Only Very important details which are needed and helpful. Avoid adding random\
+      \ information.\n5. Highlight any critical news items.\n\nFormat the response\
+      \ in Markdown with dated entries where applicable.\n\n## MARKDOWN FORMATTING\
+      \ REQUIREMENTS:\n\n**Structure:**\n- Use ### **[Subsection Title]** for all\
+      \ subsections (bold titles in h3)\n- Use #### [Sub-point Title] for deeper nesting\
+      \ if needed\n- Always maintain consistent hierarchy\n\n**Content Formatting:**\n\
+      - **Bold labels:** Use **Label:** followed by content\n- **Lists:** Use - for\
+      \ bullet points, maintain consistent indentation\n- **Important highlights:**\
+      \ Use > **Key Point:** for blockquotes\n- **Warnings/Red flags:** Use > ⚠️ **RED\
+      \ FLAG:** for concerns\n- **Emphasis:** Use **bold** for key terms, *italics*\
+      \ for emphasis\n\n**Table Standards:**\n- Always include header row with proper\
+      \ alignment\n- Use | Column 1 | Column 2 | Column 3 | format\n- Include separator\
+      \ row: |----------|----------|----------|\n- Left-align text, right-align numbers\n\
+      - Use \"N/A\" for missing data consistently\n\n**Data Presentation:**\n- **Currency:**\
+      \ Always specify unit (₹ Crores, ₹ Lakhs, etc.)\n- **Dates:** Use DD-MMM-YYYY\
+      \ format (e.g., 15-Mar-2024)\n- **Numbers:** Use Indian numbering system (Crores/Lakhs)\n\
+      - **Percentages:** Always include % symbol\n- **Ratings:** Use consistent format\
+      \ (e.g., AA-/Stable)\n\n**Professional Standards:**\n- Keep content concise\
+      \ and factual\n- Use consistent terminology throughout\n- Maintain professional\
+      \ tone\n- Include units and context for all numerical data\n- Use proper spacing\
+      \ between sections\n"
+    enabled: true
+  report_consolidator:
+    name: Report Consolidator
+    type: gemini_llm
+    description: Creates a professionally formatted consolidated report in Markdown
+    prompt_template: "# TASK: CREATE PROFESSIONAL CONSOLIDATED REPORT FOR PIRAMAL\
+      \ FINANCE\n\nAs a Senior Corporate Analyst at Piramal Finance, your task is\
+      \ to consolidate the output from 7 distinct analysis sections into ONE cohesive,\
+      \ professionally formatted Markdown report for **{company_name}**. \n\n## CRITICAL\
+      \ REQUIREMENTS:\n- Generate the COMPLETE report - do not truncate any section\n\
+      - Ensure ALL 7 sections are fully included in the output\n- Include every piece\
+      \ of information from all input sections\n- Maintain professional formatting\
+      \ throughout\n\n## GUIDELINES:\n1. FOCUS ENTIRELY ON PROFESSIONAL FORMATTING\
+      \ - do not perform new analysis\n2. Maintain EXACTLY the same sequence of 7\
+      \ sections as provided\n3. Create consistent, professional Markdown formatting\
+      \ throughout\n4. Use proper Markdown headers, tables, and lists\n5. Organize\
+      \ content for maximum readability and professionalism\n6. DO NOT change the\
+      \ substance of any information - only enhance formatting\n\n## REPORT SECTIONS\
+      \ (MAINTAIN EXACTLY THIS ORDER):\n1. Company & Business Overview: {company_overview}\n\
+      2. Industry Overview: {industry_overview}\n3. Promoters and Board of Directors:\
+      \ {promoters_directors}\n4. Credit Rating History: {credit_rating}\n5. Financial\
+      \ Performance: {financials}\n6. Compliance & Due Diligence: {compliance_checks}\n\
+      7. News & Media Analysis: {news_checks}\n\n## OUTPUT FORMAT:\n- Use Markdown\
+      \ formatting with proper headers (##, ###)\n- Create tables using Markdown table\
+      \ syntax\n- Use bullet points and numbered lists appropriately\n- Include a\
+      \ professional header with company name and report title\n- Add clear section\
+      \ dividers\n- Ensure consistent formatting across all sections\n\n## STRUCTURE:\n\
+      ```\n# CMML Market Scan Report: {company_name}\n*Generated by Piramal Finance\
+      \ Corporate & Mid-Market Lending Team*\n\n---\n\n## 1. Company & Business Overview\n\
+      [Content from company_overview]\n\n## 2. Industry Overview\n[Content from industry_overview]\n\
+      \n## 3. Promoters and Board of Directors\n[Content from promoters_directors]\n\
+      \n## 4. Credit Rating History\n[Content from credit_rating]\n\n## 5. Financial\
+      \ Performance\n[Content from financials]\n\n## 6. Compliance & Due Diligence\n\
+      [Content from compliance_checks]\n\n## 7. News & Media Analysis\n[Content from\
+      \ news_checks]\n\n---\n*Report generated on [current date] | Piramal Finance*\n\
+      ```\n\nCreate a comprehensive, professionally formatted Markdown report that\
+      \ includes ALL content from the 7 sections without any truncation.\n"
+    enabled: true
+variables:
+- name: company_name
+  description: Name of the company being analyzed
+  required: true
+  type: string
+settings:
+  allow_override: true
+  validate_variables: true
+  cache_prompts: true
+  hot_reload: false

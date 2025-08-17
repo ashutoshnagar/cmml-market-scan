@@ -1,0 +1,666 @@
+/* Workflow Management Styles for CMML Research Platform */
+
+/* Workflow Manager */
+.workflow-manager {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.95);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.workflow-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--piramal-blue);
+  color: white;
+}
+
+.workflow-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Workflow Status Bar */
+.workflow-status {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: #FFC107;
+  color: #000;
+}
+
+.status-badge:has(.completed) {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.progress-bar {
+  width: 200px;
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: white;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.status-text {
+  font-size: 0.75rem;
+  color: white;
+  white-space: nowrap;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.workflow-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.workflow-sidebar {
+  width: 300px;
+  background-color: #f5f5f5;
+  padding: 1rem;
+  overflow-y: auto;
+  border-right: 1px solid var(--border-color);
+}
+
+.workflow-sidebar h3 {
+  margin-top: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--piramal-blue);
+}
+
+.workflow-main {
+  flex: 1;
+  padding: 0;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9fafb;
+  transition: all 0.3s ease;
+}
+
+.loading-message {
+  padding: 1rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.error-message {
+  margin: 0.5rem 1rem;
+  padding: 0.5rem;
+  background-color: rgba(244, 67, 54, 0.1);
+  border-left: 3px solid var(--error);
+  color: var(--error);
+  border-radius: 0.25rem;
+}
+
+.success-message {
+  margin: 0.5rem 1rem;
+  padding: 0.5rem;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-left: 3px solid #4CAF50;
+  color: #4CAF50;
+  border-radius: 0.25rem;
+}
+
+/* Node List */
+.node-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.node-item {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.node-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.node-item.node-disabled {
+  opacity: 0.7;
+}
+
+.node-info {
+  flex: 1;
+  cursor: pointer;
+}
+
+.node-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.node-title {
+  font-weight: 600;
+  color: var(--piramal-blue);
+  margin-bottom: 0.25rem;
+}
+
+.node-type {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.toggle-button {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-button.enabled {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+.toggle-button.disabled {
+  background-color: rgba(158, 158, 158, 0.1);
+  color: #9E9E9E;
+}
+
+.toggle-button:hover {
+  opacity: 0.8;
+}
+
+.edit-button {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: var(--piramal-blue);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-button:hover {
+  background-color: var(--piramal-blue-light);
+}
+
+/* Node Editor */
+.node-editor {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  animation: fade-in 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.node-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--piramal-blue);
+  color: white;
+}
+
+.header-title-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.node-editor-header h3 {
+  margin: 0;
+}
+
+.header-status-toggle .toggle-label {
+  margin: 0;
+  color: white;
+}
+
+.header-status-toggle .toggle-switch {
+  margin: 0 0.5rem;
+}
+
+.header-status-toggle .toggle-label span:last-child {
+  font-weight: 500;
+}
+
+.header-status-toggle .toggle-label span.enabled-text {
+  color: #4ade80;
+}
+
+.header-status-toggle .toggle-label span.disabled-text {
+  color: #f87171;
+}
+
+/* Node Info Row */
+.node-info-row {
+  display: flex;
+  padding: 0.5rem 1rem; /* Reduced padding */
+  background-color: #f5f7fa;
+  border-bottom: 1px solid var(--border-color);
+  gap: 2rem;
+}
+
+.node-type-info, .node-description-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.node-info-row .node-type-badge {
+  margin-left: 0;
+}
+
+.node-info-row .node-description {
+  margin-top: 0;
+  font-size: 0.875rem;
+}
+
+/* Remove duplicate form padding since we're using node-editor-main */
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.version-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  background-color: white;
+  font-size: 0.875rem;
+}
+
+.version-select:focus {
+  outline: none;
+  border-color: var(--piramal-blue);
+  box-shadow: 0 0 0 3px rgba(30, 74, 115, 0.1);
+}
+
+.version-name-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.version-name-input:focus {
+  outline: none;
+  border-color: var(--piramal-blue);
+  box-shadow: 0 0 0 3px rgba(30, 74, 115, 0.1);
+}
+
+.loading-indicator {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-left: 0.5rem;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #4ade80; /* Green for enabled */
+}
+
+.toggle-switch input:not(:checked) + .toggle-slider {
+  background-color: #f87171; /* Red for disabled */
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(22px);
+}
+
+.node-type-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--piramal-blue-lighter);
+  color: var(--piramal-blue);
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.node-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* Node Editor Content Layout */
+.node-editor-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100% - 90px); /* Further reduced space for header and info row */
+}
+
+.node-editor-main {
+  flex: 1;
+  overflow-y: hidden;
+  padding: 0.25rem 1rem; /* Further reduced top/bottom padding */
+  display: flex;
+  flex-direction: column;
+}
+
+.node-editor-sidebar {
+  width: 250px;
+  padding: 1rem;
+  background-color: #f5f7fa;
+  border-left: 1px solid var(--border-color);
+}
+
+.versions-panel h4 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: var(--piramal-blue);
+  font-size: 0.875rem;
+}
+
+.prompt-template-group {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  margin-bottom: 0;
+  overflow: hidden; /* Prevent scrolling within the group */
+}
+
+.template-label {
+  font-size: 1rem;
+  margin-bottom: 0.25rem; /* Further reduced margin */
+  color: var(--piramal-blue);
+  line-height: 1;
+}
+
+.prompt-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 0.5rem; /* Reduced padding */
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  resize: none;
+  height: 100%;
+  min-height: 500px; /* Increased minimum height */
+  overflow-y: auto; /* Allow scrolling within the textarea */
+  overflow-x: auto;
+}
+
+.prompt-textarea:focus {
+  outline: none;
+  border-color: var(--piramal-blue);
+  box-shadow: 0 0 0 3px rgba(30, 74, 115, 0.1);
+}
+
+.help-text {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0; /* Ensure no bottom margin */
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem; /* Further reduced margin */
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+  position: sticky; /* Make it stick to the bottom */
+  bottom: 0;
+  background-color: white;
+  z-index: 10;
+}
+
+.version-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.version-name-group {
+  width: 250px;
+}
+
+.button-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.cancel-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  background-color: white;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #f5f5f5;
+}
+
+.save-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: var(--piramal-blue);
+  color: white;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.save-button:hover {
+  background-color: var(--piramal-blue-light);
+}
+
+.save-button:disabled,
+.cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* Workflow Graph */
+.workflow-graph-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.workflow-graph-canvas {
+  background-color: transparent;
+  margin-bottom: 1rem;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.graph-legend {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0;
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 0.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  margin-right: 0.25rem;
+}
+
+.legend-enabled {
+  background-color: #4ade80; /* Light green - matches our new colors */
+}
+
+.legend-disabled {
+  background-color: #fecaca; /* Very light red - matches our new colors */
+}
+
+.legend-item span.legend-color[style*="#93c5fd"] {
+  background-color: #93c5fd; /* Light blue for Report Writer */
+}
+
+.legend-item span.legend-color[style*="#e5e7eb"] {
+  background-color: #e5e7eb; /* Light gray for System nodes */
+}
+
+.graph-info {
+  margin-top: 0.25rem;
+  padding: 0.75rem 1.25rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 800px;
+}

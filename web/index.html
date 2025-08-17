@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMML Market Scan</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Document Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@7.8.2/build/index.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 CMML Market Scan</h1>
+         </header>
+
+        <main>
+            <div class="upload-section">
+                <form id="analysisForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="companyName">Company Name</label>
+                        <input 
+                            type="text" 
+                            id="companyName" 
+                            name="company_name" 
+                            required 
+                            placeholder="Enter company name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pdfFile">PDF Document</label>
+                        <div class="file-input-wrapper">
+                            <input 
+                                type="file" 
+                                id="pdfFile" 
+                                name="pdf_file" 
+                                accept=".pdf" 
+                                required
+                            >
+                            <div class="file-input-display">
+                                <span class="file-icon">📄</span>
+                                <span class="file-text">Choose PDF file or drag & drop</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Options - Configurable Prompts -->
+                    <div class="advanced-options">
+                        <button type="button" id="toggleAdvanced" class="toggle-btn">
+                            ⚙️ Customize Analysis Prompts
+                        </button>
+                        
+                        <div id="advancedContent" class="advanced-content" style="display: none;">
+                            <div class="form-group">
+                                <label for="marketPrompt">Market Research Prompt</label>
+                                <textarea 
+                                    id="marketPrompt" 
+                                    name="market_research_prompt" 
+                                    rows="6"
+                                    placeholder="Loading default market research prompt..."
+                                ></textarea>
+                                <small>This prompt will be used for Google Search-based market research and industry analysis.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="documentPrompt">Document Analysis Prompt</label>
+                                <textarea 
+                                    id="documentPrompt" 
+                                    name="document_analysis_prompt" 
+                                    rows="8"
+                                    placeholder="Loading default CMML analysis prompt..."
+                                ></textarea>
+                                <small>This prompt will be used for PDF document analysis with structured data extraction.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="compliancePrompt">Compliance & Due Diligence Prompt</label>
+                                <textarea 
+                                    id="compliancePrompt" 
+                                    name="compliance_analysis_prompt" 
+                                    rows="6"
+                                    placeholder="Loading default compliance analysis prompt..."
+                                ></textarea>
+                                <small>This prompt will be used for compliance checks, legal proceedings, and due diligence analysis.</small>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" id="resetPrompts" class="reset-btn">Reset to Defaults</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="analyzeBtn">
+                        <span class="btn-text">🔍 Analyze Company</span>
+                        <span class="btn-loading">Analyzing...</span>
+                    </button>
+                </form>
+            </div>
+
+            <div id="loadingSection" class="loading-section" style="display: none;">
+                <div class="triple-progress">
+                    <div class="progress-item">
+                        <div class="spinner"></div>
+                        <p>Market Research</p>
+                        <small>Searching web for industry insights...</small>
+                    </div>
+                    <div class="progress-item">
+                        <div class="spinner"></div>
+                        <p>Document Analysis</p>
+                        <small>Processing PDF with AI...</small>
+                    </div>
+                    <div class="progress-item">
+                        <div class="spinner"></div>
+                        <p>Compliance Analysis</p>
+                        <small>Due diligence & risk assessment...</small>
+                    </div>
+                </div>
+                <p class="main-status">Running triple intelligence analysis...</p>
+            </div>
+
+            <div id="resultsSection" class="results-section" style="display: none;">
+                <h2>📊 Comprehensive Analysis Results</h2>
+                <div class="result-header">
+                    <h3 id="resultCompany"></h3>
+                    <div class="download-dropdown">
+                        <button id="downloadBtn" class="download-btn">
+                            📥 Download Report ▼
+                        </button>
+                        <div id="downloadOptions" class="download-options">
+                            <button id="downloadPdf" class="download-option">📄 Download as PDF</button>
+                            <button id="downloadWord" class="download-option">📝 Download as Word</button>
+                            <button id="downloadText" class="download-option">📋 Download as Text</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Unified Report Content -->
+                <div id="unifiedReportContent" class="analysis-content unified-report"></div>
+
+                <button id="newAnalysisBtn" class="secondary-btn">🔄 New Analysis</button>
+            </div>
+
+            <div id="errorSection" class="error-section" style="display: none;">
+                <h2>❌ Analysis Error</h2>
+                <p id="errorMessage"></p>
+                <button id="retryBtn" class="secondary-btn">🔄 Try Again</button>
+            </div>
+        </main>
+
+      
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
