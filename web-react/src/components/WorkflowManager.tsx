@@ -36,10 +36,19 @@ const WorkflowManager: React.FC<WorkflowManagerProps> = ({ analysisId, isOpen, o
       setIsLoading(true);
       setError(null);
       const data = await workflowService.getNodes();
-      setNodes(data);
+      
+      // Ensure we always have an array, even if the API returns null or undefined
+      const safeData = Array.isArray(data) ? data : [];
+      setNodes(safeData);
+      
+      if (!Array.isArray(data)) {
+        console.warn('API returned non-array data for nodes:', data);
+      }
     } catch (err) {
       setError('Failed to fetch workflow nodes');
       console.error(err);
+      // Ensure nodes is always an array
+      setNodes([]);
     } finally {
       setIsLoading(false);
     }
@@ -50,10 +59,19 @@ const WorkflowManager: React.FC<WorkflowManagerProps> = ({ analysisId, isOpen, o
       setIsLoading(true);
       setError(null);
       const data = await workflowService.getNodeResults(id);
-      setNodeResults(data);
+      
+      // Ensure we always have an array, even if the API returns null or undefined
+      const safeData = Array.isArray(data) ? data : [];
+      setNodeResults(safeData);
+      
+      if (!Array.isArray(data)) {
+        console.warn('API returned non-array data for node results:', data);
+      }
     } catch (err) {
       setError('Failed to fetch node results');
       console.error(err);
+      // Ensure nodeResults is always an array
+      setNodeResults([]);
     } finally {
       setIsLoading(false);
     }
@@ -78,9 +96,13 @@ const WorkflowManager: React.FC<WorkflowManagerProps> = ({ analysisId, isOpen, o
       
       if (response.success) {
         // Update the nodes list with the updated node
-        setNodes(prev => prev.map(node => 
-          node.id === nodeId ? response.node : node
-        ));
+        setNodes(prev => {
+          // Ensure prev is an array
+          const safeNodes = Array.isArray(prev) ? prev : [];
+          return safeNodes.map(node => 
+            node.id === nodeId ? response.node : node
+          );
+        });
         
         // Close the editor
         setIsEditorOpen(false);
@@ -105,9 +127,13 @@ const WorkflowManager: React.FC<WorkflowManagerProps> = ({ analysisId, isOpen, o
       
       if (response.success) {
         // Update the nodes list with the updated node
-        setNodes(prev => prev.map(node => 
-          node.id === nodeId ? response.node : node
-        ));
+        setNodes(prev => {
+          // Ensure prev is an array
+          const safeNodes = Array.isArray(prev) ? prev : [];
+          return safeNodes.map(node => 
+            node.id === nodeId ? response.node : node
+          );
+        });
       } else {
         setError(response.error || 'Failed to toggle node');
       }
@@ -127,6 +153,10 @@ const WorkflowManager: React.FC<WorkflowManagerProps> = ({ analysisId, isOpen, o
   // If not open, don't render anything
   if (!isOpen) return null;
 
+  // Ensure nodes is always an array for rendering
+  const safeNodes = Array.isArray(nodes) ? nodes : [];
+  const safeNodeResults = Array.isArray(nodeResults) ? nodeResults : [];
+
   return (
     <div className="workflow-manager">
       <div className="workflow-header">
@@ -142,7 +172,7 @@ const WorkflowManager: React.FC<WorkflowManagerProps> = ({ analysisId, isOpen, o
           {isLoading && <div className="loading-message">Loading...</div>}
           
           <ul className="node-list">
-            {nodes.map(node => (
+            {safeNodes.map(node => (
               <li 
                 key={node.id} 
                 className={`node-item ${!node.enabled ? 'node-disabled' : ''}`}
@@ -190,8 +220,8 @@ const WorkflowManager: React.FC<WorkflowManagerProps> = ({ analysisId, isOpen, o
             />
           ) : (
             <WorkflowGraph 
-              nodes={nodes}
-              nodeResults={nodeResults}
+              nodes={safeNodes}
+              nodeResults={safeNodeResults}
               onNodeClick={handleNodeClick}
             />
           )}
