@@ -5,14 +5,31 @@
   "framework": null,
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/api/workflow/nodes/:id",
+      "destination": "/api/workflow/nodes/[id]"
+    },
+    {
+      "source": "/api/workflow/nodes/:id/toggle",
+      "destination": "/api/workflow/nodes/[id]"
+    },
+    {
+      "source": "/api/workflow/nodes",
+      "destination": "/api/workflow/nodes"
+    },
+    {
+      "source": "/api",
       "destination": "/api"
     }
   ],
   "functions": {
     "api/index.js": {
-      "maxDuration": 30,
-      "includeFiles": "api/**"
+      "maxDuration": 30
+    },
+    "api/workflow/nodes.js": {
+      "maxDuration": 30
+    },
+    "api/workflow/nodes/[id].js": {
+      "maxDuration": 30
     }
   },
   "headers": [
