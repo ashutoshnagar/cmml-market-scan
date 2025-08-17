@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "cd web-react && npm install && npx vite build",
+  "buildCommand": "cd web-react && npm install && npm run build",
   "outputDirectory": "web-react/dist",
   "routes": [
     {
