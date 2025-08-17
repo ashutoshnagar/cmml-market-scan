@@ -4,12 +4,12 @@
   "description": "CMML Market Scan project with React frontend and Node.js backend",
   "main": "index.js",
   "scripts": {
-    "build": "cd web-react && npm install && npm install vite@4.3.9 --no-save && npm run build",
+    "build": "cd web-react && npm install && npm install vite@4.3.9 @vitejs/plugin-react@4.2.0 --no-save && npm run build",
     "start": "cd web-react && npm start",
-    "vercel-build": "cd web-react && npm install && npm install vite@4.3.9 --no-save && node node_modules/vite/bin/vite.js build"
+    "vercel-build": "cd web-react && npm install && npm install vite@4.3.9 @vitejs/plugin-react@4.2.0 --no-save && node node_modules/vite/bin/vite.js build"
   },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   },
   "dependencies": {
     "cors": "^2.8.5",
