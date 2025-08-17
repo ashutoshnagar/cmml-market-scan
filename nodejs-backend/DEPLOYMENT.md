@@ -50,10 +50,9 @@ This will prompt you to configure your project. Use the following settings:
 Set your environment variables in the Vercel dashboard:
 1. Go to your project settings
 2. Navigate to the Environment Variables section
-3. Add the following variables:
-   - `GOOGLE_API_KEY`: Your Google API key
-   - `GOOGLE_SEARCH_ENGINE_ID`: Your search engine ID
-   - `GEMINI_API_KEY`: Your Gemini API key
+3. Add any necessary variables for your implementation
+
+**Note:** The Node.js backend uses console logging for tracking API calls and workflow execution. These logs will be visible in the Vercel dashboard under the "Logs" section of your deployment.
 
 ### 6. Production Deployment
 
@@ -67,36 +66,25 @@ This creates a production deployment and assigns it to your production domain.
 
 ## Connecting the Frontend
 
-### Option 1: Update API Base URL
+After deploying the Node.js backend to Vercel, deploy the React frontend as a separate project:
 
-Modify the frontend to point to your Vercel deployment:
+### 1. Deploy the React Frontend
 
-```typescript
-// In web-react/src/services/api.ts
-constructor(baseUrl = 'https://your-vercel-app.vercel.app/api') {
-  this.baseUrl = baseUrl;
-}
-```
+1. Navigate to the `web-react` directory
+2. Deploy to Vercel using the same method:
+   ```bash
+   cd web-react
+   vercel
+   ```
 
-### Option 2: Configure Proxy in Vite
+### 2. Configure Environment Variables
 
-Alternatively, update your vite.config.ts to proxy API requests to Vercel:
+In your React frontend project on Vercel, set the following environment variables:
 
-```typescript
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'https://your-vercel-app.vercel.app',
-        changeOrigin: true,
-        rewrite: (path) => path,
-      },
-    },
-  },
-});
-```
+- `VITE_NODEJS_BACKEND_URL`: URL to your deployed Node.js backend (e.g., 'https://your-backend.vercel.app/api')
+- `VITE_PYTHON_BACKEND_URL`: URL to your Python backend (if applicable)
+
+The frontend is already configured to use these environment variables through our updated API service.
 
 ## Verifying Deployment
 
@@ -118,11 +106,16 @@ After deployment, verify your API endpoints are working:
    - If you encounter timeouts, consider upgrading to Vercel Pro for longer function execution time
 
 2. **CORS Issues**:
-   - Add your frontend domain to the CORS allowed origins in your Vercel functions
+   - The `vercel.json` file already includes CORS headers allowing requests from any origin
+   - If you need to restrict access to specific domains, update the `Access-Control-Allow-Origin` header
 
 3. **File Upload Errors**:
    - Ensure file size is below limits (default 4MB, can be increased in Pro plan)
    - Configure Vercel Blob storage for proper file handling
+
+4. **Environment Variable Issues**:
+   - If the frontend isn't connecting to the backend, verify that environment variables are set correctly
+   - Check browser console for connection errors
 
 ## Going Further
 

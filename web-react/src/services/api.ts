@@ -1,10 +1,16 @@
 /**
  * API Service for CMML Research Platform
  * Handles communication with both Python and Node.js backends
+ * Supports both local development and production deployments
  */
 
 // Backend Types
 export type BackendType = 'python' | 'nodejs';
+
+// Environment detection
+export const isProd = import.meta.env.PROD;
+export const nodejsBackendUrl = import.meta.env.VITE_NODEJS_BACKEND_URL || 'http://localhost:3001/api';
+export const pythonBackendUrl = import.meta.env.VITE_PYTHON_BACKEND_URL || '/api';
 
 // API Types
 export interface AnalysisRequest {
@@ -31,17 +37,17 @@ export class ApiService {
   }
   
   /**
-   * Get base URL based on the backend type
+   * Get base URL based on the backend type and environment
    */
   private getBaseUrl(backendType: BackendType): string {
     switch (backendType) {
       case 'nodejs':
-        // Use localhost for local development
-        return 'http://localhost:3001/api';
+        // Use environment variable or fallback to localhost for development
+        return nodejsBackendUrl;
       case 'python':
       default:
-        // Use relative path for Python backend (default)
-        return '/api';
+        // Use environment variable or fallback to relative path
+        return pythonBackendUrl;
     }
   }
   
@@ -51,7 +57,14 @@ export class ApiService {
   switchBackend(backendType: BackendType): void {
     this.backendType = backendType;
     this.baseUrl = this.getBaseUrl(backendType);
-    console.log(`Switched to ${backendType} backend at ${this.baseUrl}`);
+    console.log(`Switched to ${backendType} backend at ${this.baseUrl} (${isProd ? 'production' : 'development'} environment)`);
+    
+    // Save preference to localStorage for persistence
+    try {
+      localStorage.setItem('cmml_backend_type', backendType);
+    } catch (e) {
+      console.warn('Could not save backend preference to localStorage', e);
+    }
   }
   
   /**
@@ -117,6 +130,16 @@ export class ApiService {
 }
 
 // Create and export a singleton instance
-export const apiService = new ApiService();
+// Initialize with saved preference from localStorage if available
+const getSavedBackendType = (): BackendType => {
+  try {
+    const saved = localStorage.getItem('cmml_backend_type') as BackendType;
+    return saved === 'nodejs' || saved === 'python' ? saved : 'python';
+  } catch (e) {
+    return 'python';
+  }
+};
+
+export const apiService = new ApiService(getSavedBackendType());
 
 export default apiService;
