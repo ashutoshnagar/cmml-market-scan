@@ -96,6 +96,38 @@ html, body {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
+/* Backend Toggle Styles */
+.workflow-button .backend-label {
+  font-size: 0.7rem;
+  font-weight: bold;
+  margin-right: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.2rem;
+  transition: all 0.2s ease;
+}
+
+.workflow-button:hover .backend-label {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Different colors for different backends */
+.workflow-button[title*="Node.js"] {
+  background-color: rgba(104, 160, 99, 0.4);
+}
+
+.workflow-button[title*="Node.js"]:hover {
+  background-color: rgba(104, 160, 99, 0.6);
+}
+
+.workflow-button[title*="Python"] {
+  background-color: rgba(66, 106, 170, 0.4);
+}
+
+.workflow-button[title*="Python"]:hover {
+  background-color: rgba(66, 106, 170, 0.6);
+}
+
 /* Main Chat Area */
 .chat-main {
   flex: 1;

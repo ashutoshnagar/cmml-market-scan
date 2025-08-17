@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import apiService from './services/api';
+import apiService, { BackendType } from './services/api';
 import WorkflowManager from './components/WorkflowManager';
 import MarkdownRenderer from './components/MarkdownRenderer';
 
@@ -21,6 +21,21 @@ const SendIcon: React.FC = () => (
   </svg>
 );
 
+// Backend Toggle Icon Component
+const BackendToggleIcon: React.FC<{ isNodeJs: boolean }> = ({ isNodeJs }) => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {isNodeJs ? (
+      // Node.js-like icon
+      <path d="M12 21.8C11.5 21.8 11 21.6 10.6 21.4L7.4 19.6C6.8 19.2 7.1 19.1 7.3 19.1C8 18.8 8.1 18.8 8.9 18.4C9 18.3 9.2 18.4 9.3 18.4L11.8 19.9C11.9 20 12.1 20 12.2 19.9L20.6 14.8C20.7 14.7 20.8 14.6 20.8 14.4V4.3C20.8 4.1 20.7 4 20.6 3.9L12.2 -1.2C12.1 -1.3 11.9 -1.3 11.8 -1.2L3.4 3.9C3.3 4 3.2 4.2 3.2 4.3V14.4C3.2 14.6 3.3 14.7 3.4 14.8L5.8 16.2C7.2 16.9 8 16.1 8 15.2V5.2C8 5 8.2 4.9 8.3 4.9H9.7C9.9 4.9 10 5 10 5.2V15.2C10 17.3 8.9 18.6 6.9 18.6C6.2 18.6 5.7 18.6 4.5 18C3.4 17.4 2.7 17.1 2.7 17.1C2.6 17 2.5 16.9 2.5 16.8V4.3C2.5 3.8 2.8 3.3 3.2 3.1L11.8 -2.1C12.2 -2.3 12.8 -2.3 13.2 -2.1L21.6 3.1C22 3.3 22.3 3.8 22.3 4.3V14.4C22.3 14.9 22 15.4 21.6 15.6L13.2 20.7C12.8 20.9 12.3 20.9 11.9 20.7L9.6 19.4C9.5 19.3 9.3 19.3 9.2 19.3" 
+        stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    ) : (
+      // Python-like icon
+      <path d="M12 3C6.5 3 7 5.5 7 5.5V8.5H12.5V9H4.5C4.5 9 2 8.5 2 14S4.5 19 4.5 19H7V16C7 16 6.5 13.5 9.5 13.5H15C15 13.5 17.5 13.7 17.5 11V6C17.5 6 18.2 3 12 3zM9 6C9.8 6 10.5 6.7 10.5 7.5C10.5 8.3 9.8 9 9 9C8.2 9 7.5 8.3 7.5 7.5C7.5 6.7 8.2 6 9 6z" 
+        stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    )}
+  </svg>
+);
+
 // Main App Component
 const App: React.FC = () => {
   const [companyName, setCompanyName] = useState('');
@@ -31,8 +46,36 @@ const App: React.FC = () => {
   const [analysisId, setAnalysisId] = useState<string | null>(null);
   const [messages, setMessages] = useState<{type: 'user' | 'system', content: string}[]>([]);
   const [isWorkflowManagerOpen, setIsWorkflowManagerOpen] = useState(false);
+  const [backendType, setBackendType] = useState<BackendType>(() => {
+    // Load from localStorage or default to 'python'
+    const savedBackend = localStorage.getItem('cmml_backend_type');
+    return (savedBackend as BackendType) || 'python';
+  });
   
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  
+  // Initialize API service with the saved backend type
+  useEffect(() => {
+    apiService.switchBackend(backendType);
+  }, [backendType]);
+  
+  // Save backend type to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('cmml_backend_type', backendType);
+  }, [backendType]);
+  
+  // Toggle between Python and Node.js backends
+  const toggleBackend = () => {
+    const newBackendType: BackendType = backendType === 'python' ? 'nodejs' : 'python';
+    setBackendType(newBackendType);
+    apiService.switchBackend(newBackendType);
+    
+    // Add a system message about backend change
+    setMessages(prev => [...prev, {
+      type: 'system',
+      content: `Switched to ${newBackendType === 'python' ? 'Python' : 'Node.js'} backend.`
+    }]);
+  };
   
   // Handle new chat - resets the conversation
   const handleNewChat = () => {
@@ -187,6 +230,14 @@ const App: React.FC = () => {
         <img src="/piramal-logo.svg" alt="Piramal" />
         <h1>CMML Research Platform</h1>
         <div className="header-buttons">
+          <button 
+            className="workflow-button"
+            onClick={toggleBackend}
+            title={`Switch to ${backendType === 'python' ? 'Node.js' : 'Python'} Backend`}
+          >
+            <span className="backend-label">{backendType === 'python' ? 'PY' : 'JS'}</span>
+            <BackendToggleIcon isNodeJs={backendType === 'nodejs'} />
+          </button>
           <button 
             className="workflow-button"
             onClick={handleNewChat}

@@ -13,7 +13,7 @@ A comprehensive market research platform for CMML (Corporate & Mid-Market Lendin
 
 ## System Architecture
 
-The platform consists of two main components:
+The platform consists of three main components:
 
 1. **React Frontend**
    - Modern React application with TypeScript
@@ -27,6 +27,12 @@ The platform consists of two main components:
    - Google search and Gemini AI integration
    - Asynchronous analysis with session tracking
 
+3. **Node.js Backend API (Vercel-ready)**
+   - Alternative backend implementation with identical API contract
+   - Optimized for serverless deployment to Vercel
+   - TypeScript implementation with full type safety
+   - Drop-in replacement for Flask backend
+
 ## Getting Started
 
 ### Prerequisites
@@ -34,6 +40,7 @@ The platform consists of two main components:
 - Python 3.9+ with pip
 - Node.js 16+ with npm
 - Google API Key for Gemini AI (set in `.env`)
+- (Optional) Vercel account for Node.js backend deployment
 
 ### Installation
 
@@ -57,7 +64,34 @@ The platform consists of two main components:
 
 4. Access the application:
    - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
+   - Python Backend API: http://localhost:8000
+   - (Optional) Node.js Backend: http://localhost:3001 (when running Node.js backend)
+
+### Vercel Deployment (Optional)
+
+To deploy the Node.js backend to Vercel:
+
+1. Install Vercel CLI:
+   ```
+   npm install -g vercel
+   ```
+
+2. Deploy to Vercel:
+   ```
+   cd nodejs-backend
+   vercel
+   ```
+
+3. For production deployment:
+   ```
+   vercel --prod
+   ```
+
+4. Update the frontend API service to point to the Vercel deployment:
+   ```typescript
+   // In web-react/src/services/api.ts
+   constructor(baseUrl = 'https://your-vercel-app.vercel.app/api') {
+   ```
 
 ## Usage
 
@@ -108,6 +142,10 @@ cmml-market-scan/
 │   │   ├── components/    # React components
 │   │   ├── services/      # API services
 │   │   └── styles/        # CSS styles
+│   └── ...
+├── nodejs-backend/        # Node.js backend (Vercel-ready)
+│   ├── api/               # Vercel API functions
+│   ├── lib/               # Shared utilities
 │   └── ...
 ├── uploads/               # PDF upload directory
 ├── outputs/               # Analysis results

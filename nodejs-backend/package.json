@@ -1,0 +1,41 @@
+{
+  "name": "cmml-research-platform-backend",
+  "version": "1.0.0",
+  "description": "Node.js backend for CMML Market Scan application",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node dev.js",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "vercel-dev": "vercel dev"
+  },
+  "keywords": [
+    "cmml",
+    "research",
+    "piramal",
+    "vercel"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@langchain/core": "^0.1.25",
+    "@langchain/google-genai": "^0.0.10",
+    "@vercel/blob": "^0.19.0",
+    "@vercel/node": "^3.0.21",
+    "langchain": "^0.1.26",
+    "multer": "^1.4.5-lts.1",
+    "next": "^14.1.4",
+    "pdf-parse": "^1.1.1",
+    "uuid": "^9.0.1",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@types/multer": "^1.4.11",
+    "@types/node": "^20.11.30",
+    "@types/pdf-parse": "^1.1.4",
+    "@types/react": "19.1.10",
+    "@types/uuid": "^9.0.8",
+    "typescript": "^5.3.3"
+  }
+}

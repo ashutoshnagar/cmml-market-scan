@@ -3,7 +3,7 @@
  * Handles node configuration, prompt management, and workflow visualization
  */
 
-import apiService from './api';
+import apiService, { ApiService } from './api';
 
 // Types
 export interface Node {
@@ -123,10 +123,17 @@ const MOCK_NODES: Node[] = [
 
 // Workflow Service Class
 export class WorkflowService {
-  private baseUrl: string;
+  private apiService: ApiService;
   
-  constructor(baseUrl = '/api') {
-    this.baseUrl = baseUrl;
+  constructor(apiServiceInstance = apiService) {
+    this.apiService = apiServiceInstance;
+  }
+  
+  /**
+   * Get the current base URL from the API service
+   */
+  private getBaseUrl(): string {
+    return this.apiService.getCurrentBaseUrl();
   }
   
   /**
@@ -136,7 +143,7 @@ export class WorkflowService {
     try {
       // Try to fetch from real API first
       try {
-        const response = await fetch(`${this.baseUrl}/workflow/nodes`);
+        const response = await fetch(`${this.getBaseUrl()}/workflow/nodes`);
         if (response.ok) {
           return await response.json();
         }
@@ -159,7 +166,7 @@ export class WorkflowService {
     try {
       // Try to use real API first
       try {
-        const response = await fetch(`${this.baseUrl}/workflow/nodes/${data.nodeId}`, {
+        const response = await fetch(`${this.getBaseUrl()}/workflow/nodes/${data.nodeId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -207,7 +214,7 @@ export class WorkflowService {
     try {
       // Try to use real API first
       try {
-        const response = await fetch(`${this.baseUrl}/workflow/nodes/${nodeId}/toggle`, {
+        const response = await fetch(`${this.getBaseUrl()}/workflow/nodes/${nodeId}/toggle`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -252,7 +259,7 @@ export class WorkflowService {
     try {
       // Try to use real API
       try {
-        const response = await fetch(`${this.baseUrl}/workflow/nodes/${nodeId}/versions`);
+        const response = await fetch(`${this.getBaseUrl()}/workflow/nodes/${nodeId}/versions`);
         if (response.ok) {
           return await response.json();
         }
@@ -287,7 +294,7 @@ export class WorkflowService {
     try {
       // Try to use real API
       try {
-        const response = await fetch(`${this.baseUrl}/workflow/nodes/${nodeId}/versions`, {
+        const response = await fetch(`${this.getBaseUrl()}/workflow/nodes/${nodeId}/versions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -331,7 +338,7 @@ export class WorkflowService {
     try {
       // Try to use real API
       try {
-        const response = await fetch(`${this.baseUrl}/workflow/nodes/${nodeId}/versions/${versionId}/activate`, {
+        const response = await fetch(`${this.getBaseUrl()}/workflow/nodes/${nodeId}/versions/${versionId}/activate`, {
           method: 'PUT'
         });
         
@@ -369,7 +376,7 @@ export class WorkflowService {
       // Get node outputs from the API (if available)
       let nodeOutputs: Record<string, string> = {};
       try {
-        const response = await fetch(`${this.baseUrl}/workflow/node_outputs/${analysisId}`);
+        const response = await fetch(`${this.getBaseUrl()}/workflow/node_outputs/${analysisId}`);
         if (response.ok) {
           nodeOutputs = await response.json();
         }
